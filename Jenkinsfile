@@ -1,8 +1,8 @@
 pipeline {
   agent any
-  tools {
-    node 'node'
-  }
+  // tools {
+  //   node 'node'
+  // }
   stages {
     stage("install packaage"){
       steps {
