@@ -21,17 +21,18 @@ pipeline {
                 }
             }
         }
-        stage("Build Image") {
-            steps {
-                script {
-                    gv.buildImage()
-                }
-            }
-        }
         stage("test") {
             steps {
                 script {  // Wrap inside script block
                     gv.testApp()
+                }
+            }
+        }
+        stage("Build Image") {
+            steps {
+                script {
+                    gv.buildImage()
+                    gv.pushToDockerHub()
                 }
             }
         }
