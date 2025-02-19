@@ -26,7 +26,7 @@ pipeline {
     stage("Build Image"){
       steps {
         script{
-          gb.buildImage()
+          gv.buildImage()
         }
         
       }
@@ -39,7 +39,7 @@ pipeline {
     }
     stage("deploy"){
       steps {
-         gb.deployApp()
+         gv.deployApp()
       }
     }
   }
