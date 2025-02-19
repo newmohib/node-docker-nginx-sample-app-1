@@ -31,10 +31,10 @@ pipeline {
         stage("Build Image") {
             steps {
                 script {
-                    // gv.buildImage()
-                    // gv.pushToDockerHub()
-                    gv.buildImageWithCheckExistes()
-                    gv.pushToDockerHubWithCheckExistes() 
+                     gv.buildImage()
+                     gv.pushToDockerHub()
+                    //gv.buildImageWithCheckExistes()
+                    //gv.pushToDockerHubWithCheckExistes() 
                 }
             }
         }
