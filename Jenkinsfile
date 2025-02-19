@@ -8,7 +8,7 @@ pipeline {
       steps {
         script{
           echo 'installing the application...'
-          sh 'node -v'
+          sh 'node -v && npm i'
         }
         
       }
