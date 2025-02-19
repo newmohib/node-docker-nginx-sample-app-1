@@ -35,6 +35,7 @@ def buildImageWithCheckExistes(){
 
   // Generate a unique tag using the latest Git commit hash
   def imageTag = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+  echo "imge tag $imageTag"
   env.IMAGE_TAG = imageTag
 
   // Build the Docker image
