@@ -1,14 +1,14 @@
 pipeline {
   agent any
-  // tools {
-  //   node 'node'
-  // }
+  tools {
+    nodejs 'node22'
+  }
   stages {
     stage("install packaage"){
       steps {
         script{
           echo 'installing the application...'
-          sh 'npm install'
+          sh 'node -v'
         }
         
       }
