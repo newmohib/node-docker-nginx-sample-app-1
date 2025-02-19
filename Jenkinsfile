@@ -33,8 +33,8 @@ pipeline {
                 script {
                     // gv.buildImage()
                     // gv.pushToDockerHub()
-                    gv.pushToDockerHubWithCheckExistes() 
                     gv.buildImageWithCheckExistes()
+                    gv.pushToDockerHubWithCheckExistes() 
                 }
             }
         }
