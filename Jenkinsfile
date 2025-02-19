@@ -1,14 +1,24 @@
+def gv
+
 pipeline {
   agent any
   tools {
     nodejs 'Nodejs-22.14.0'
   }
   stages {
+    stage("init app"){
+      steps {
+        script{
+          echo 'initializing application and load script.groovy'
+          gv = load "script.groovy"
+        }
+        
+      }
+    }
     stage("install packaage"){
       steps {
         script{
-          echo 'installing the application...'
-          sh 'node -v && npm i'
+          gv.installPackage()
         }
         
       }
@@ -16,25 +26,20 @@ pipeline {
     stage("Build Image"){
       steps {
         script{
-          echo 'building the docker image...'
-          sh 'node -v && npm i && docker -v && docker images && docker ps -a'
-          withCredentials([usernamePassword(credentialsId:'docker-hub-personal-credential',passwordVariable:'PASS', usernameVariable:'USER')]){
-            sh 'docker build -t newmohib/node-docker-nginx-sample-app:node-1.0.2 .'
-            sh 'echo $PASS | docker login -u $USER --password-stdin'
-            sh 'docker push newmohib/node-docker-nginx-sample-app:node-1.0.2'
-          }
+          gb.buildImage()
         }
         
       }
     }
     stage("test"){
       steps {
-        echo 'testing the application...'
+        gv.testApp()
+        
       }
     }
     stage("deploy"){
       steps {
-        echo 'deploying the application...'
+         gb.deployApp()
       }
     }
   }
