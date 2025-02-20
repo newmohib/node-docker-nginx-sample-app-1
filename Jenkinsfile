@@ -1,4 +1,8 @@
-def gv
+#!/usr/bin/env groovy
+
+// jenkins-shared-library
+@Library('jenkins-shared-library')
+// def gv
 
 pipeline {
     agent any
@@ -10,29 +14,29 @@ pipeline {
             steps {
                 script {
                     echo 'Initializing application and loading script.groovy'
-                    gv = load "script.groovy"
+                    //gv = load "script.groovy"
                 }
             }
         }
         stage("install package") {
             steps {
                 script {
-                    gv.installPackage()
+                    installPackage()
                 }
             }
         }
         stage("test") {
             steps {
                 script {  // Wrap inside script block
-                    gv.testApp()
+                    testApp()
                 }
             }
         }
         stage("Build Image") {
             steps {
                 script {
-                     gv.buildImage()
-                     gv.pushToDockerHub()
+                     buildImage()
+                     pushToDockerHub()
                     //gv.buildImageWithCheckExistes()
                     //gv.pushToDockerHubWithCheckExistes() 
                 }
@@ -41,7 +45,7 @@ pipeline {
         stage("deploy") {
             steps {
                 script {  // Wrap inside script block
-                    gv.deployApp()
+                    deployApp()
                 }
             }
         }
