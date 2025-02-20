@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-// jenkins-shared-library
+
 @Library('jenkins-shared-library')
 // def gv
 
@@ -21,22 +21,22 @@ pipeline {
         stage("install package") {
             steps {
                 script {
-                    installPackage()
+                   // installPackage()
                 }
             }
         }
         stage("test") {
             steps {
                 script {  // Wrap inside script block
-                    testApp()
+                  //  testApp()
                 }
             }
         }
         stage("Build Image") {
             steps {
                 script {
-                     buildImage()
-                     pushToDockerHub()
+                    // buildImage()
+                    // pushToDockerHub()
                     //gv.buildImageWithCheckExistes()
                     //gv.pushToDockerHubWithCheckExistes() 
                 }
@@ -45,7 +45,7 @@ pipeline {
         stage("deploy") {
             steps {
                 script {  // Wrap inside script block
-                    deployApp()
+                  //  deployApp()
                 }
             }
         }
