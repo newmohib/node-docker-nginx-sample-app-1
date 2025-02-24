@@ -35,8 +35,10 @@ pipeline {
         stage("Build Image") {
             steps {
                 script {
+                    def docker = new Docker(this)
+                    docker.buildDockerImagePush('newmohib/node-docker-nginx-sample-app:node-1.0.4')
                     // buildImage('newmohib/node-docker-nginx-sample-app:node-1.0.4')
-                     buildImageForPush('newmohib/node-docker-nginx-sample-app:node-1.0.4')
+                    // buildImageForPush('newmohib/node-docker-nginx-sample-app:node-1.0.4')
                     // pushToDockerHub('newmohib/node-docker-nginx-sample-app:node-1.0.4') 
                 }
             }
