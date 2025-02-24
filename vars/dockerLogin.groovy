@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def call(){
+def call(String imageName){
     def docker = new Docker(this)
     return docker.dockerHubLogin()
 }
