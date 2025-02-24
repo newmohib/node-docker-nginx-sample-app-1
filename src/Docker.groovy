@@ -20,7 +20,7 @@ class Docker implements Serializable {
         }
     }
 
-    def buildDockerImage2(String imageName) {
+    def buildDockerImages(String imageName) {
         script.echo "Building Docker image $imageName"
         script.sh "node -v && npm i && docker -v && docker images && docker ps -a"
         script.sh "docker build -t $imageName ."
