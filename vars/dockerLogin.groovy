@@ -2,5 +2,5 @@
 
 def call(){
     def docker = new Docker(this)
-    return docker.dockerHubLogin(imageName)
+    return docker.dockerHubLogin()
 }
