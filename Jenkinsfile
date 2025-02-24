@@ -36,7 +36,7 @@ pipeline {
             steps {
                 script {
                      buildImage('newmohib/node-docker-nginx-sample-app:node-1.0.4')
-                     
+                     loginDocker('newmohib/node-docker-nginx-sample-app:node-1.0.4')
                      pushToDockerHub('newmohib/node-docker-nginx-sample-app:node-1.0.4')
                     //gv.buildImageWithCheckExistes()
                     //gv.pushToDockerHubWithCheckExistes() 
