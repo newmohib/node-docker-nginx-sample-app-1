@@ -28,7 +28,7 @@ pipeline {
         stage("test") {
             steps {
                 script {  // Wrap inside script block
-                    testApp()
+                    testApp.call()
                     echo 'Testing the application 3...'
                 }
             }
