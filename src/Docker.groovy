@@ -15,7 +15,7 @@ class Docker implements Serializable {
         script.sh "docker build -t $imageName ."
     }
 
-    def dockerHubLogin(String imageName) {
+    def dockerLogin(String imageName) {
         script.echo "Logging in to docker hub... for image $imageName"
         withCredentials([usernamePassword(credentialsId:'docker-hub-personal-credential',passwordVariable:'PASS', usernameVariable:'USER')])
         {
