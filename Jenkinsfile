@@ -25,6 +25,13 @@ pipeline {
                 }
             }
         }
+        stage("test build") {
+            steps {
+                script {  // Wrap inside script block
+                    testBuildApp()
+                }
+            }
+        }
         stage("Build Image") {
             steps {
                 script {
