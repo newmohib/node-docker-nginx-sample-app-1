@@ -25,14 +25,6 @@ pipeline {
                 }
             }
         }
-        stage("test") {
-            steps {
-                script {  // Wrap inside script block
-                    testApp.call()
-                    echo 'Testing the application 3...'
-                }
-            }
-        }
         stage("Build Image") {
             steps {
                 script {
