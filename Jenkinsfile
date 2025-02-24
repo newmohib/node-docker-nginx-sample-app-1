@@ -29,6 +29,7 @@ pipeline {
             steps {
                 script {  // Wrap inside script block
                     testApp()
+                    echo 'Testing the application 3...'
                 }
             }
         }
