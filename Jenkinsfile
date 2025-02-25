@@ -36,17 +36,17 @@ pipeline {
                 }
             }
         }
-        stage('Commit & Push Changes') {
-            steps {
-                script {
-                    sh 'git config --global user.name "Jenkins"'
-                    sh 'git config --global user.email "jenkins@example.com"'
-                    sh 'git add package.json package-lock.json'
-                    sh 'git commit -m "Bump version [skip ci]"'
-                    sh 'git push origin HEAD'
-                }
-            }
-        }
+        // stage('Commit & Push Changes') {
+        //     steps {
+        //         script {
+        //             sh 'git config --global user.name "Jenkins"'
+        //             sh 'git config --global user.email "jenkins@example.com"'
+        //             sh 'git add package.json package-lock.json'
+        //             sh 'git commit -m "Bump version [skip ci]"'
+        //             sh 'git push origin HEAD'
+        //         }
+        //     }
+        // }
         stage("install package") {
             steps {
                 script {
