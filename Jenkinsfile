@@ -36,17 +36,27 @@ pipeline {
                 }
             }
         }
-        // stage('Commit & Push Changes') {
-        //     steps {
-        //         script {
-        //             sh 'git config --global user.name "Jenkins"'
-        //             sh 'git config --global user.email "jenkins@example.com"'
-        //             sh 'git add package.json package-lock.json'
-        //             sh 'git commit -m "Bump version [skip ci]"'
-        //             sh 'git push origin HEAD'
-        //         }
-        //     }
-        // }
+        stage('Commit & Push Changes') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId:'github-personal-credential-2',passwordVariable:'PASS', usernameVariable:'USER')])
+                        {
+                            sh 'git config --global user.name "Jenkins"'
+                            sh 'git config --global user.email "jenkins@example.com"'
+                            
+                            sh 'git status'
+                            sh 'git branch'
+                            sh 'git config --list'
+                            
+                            sh "git remote set-url origin https://${USER}:${PASS}@github.com/newmohib/node-docker-nginx-sample-app-1.git"
+                            sh 'git add package.json package-lock.json'
+                            sh 'git commit -m "Bump version [skip ci]"'
+                            // sh 'git push origin HEAD'
+                            sh 'git push origin HEAD:dev-jenkins-5'
+                        }
+                }
+            }
+        }
         stage("install package") {
             steps {
                 script {
