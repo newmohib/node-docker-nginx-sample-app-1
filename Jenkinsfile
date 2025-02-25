@@ -31,22 +31,22 @@ pipeline {
 
                     // Get new version
                     def newVersion = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
-
-                    echo "Version updated from ${currentVersion} to ${newVersion}"
+                    env.IMAGE_NAME = "$newVersion-$BUILD_NUMBER"
+                    echo "Version updated from ${currentVersion} to ${newVersion} and image tag is ${IMAGE_NAME}"
                 }
             }
         }
-        // stage('Commit & Push Changes') {
-        //     steps {
-        //         script {
-        //             sh 'git config --global user.name "Jenkins"'
-        //             sh 'git config --global user.email "jenkins@example.com"'
-        //             sh 'git add package.json package-lock.json'
-        //             sh 'git commit -m "Bump version [skip ci]"'
-        //             sh 'git push origin HEAD'
-        //         }
-        //     }
-        // }
+        stage('Commit & Push Changes') {
+            steps {
+                script {
+                    sh 'git config --global user.name "Jenkins"'
+                    sh 'git config --global user.email "jenkins@example.com"'
+                    sh 'git add package.json package-lock.json'
+                    sh 'git commit -m "Bump version [skip ci]"'
+                    sh 'git push origin HEAD'
+                }
+            }
+        }
         stage("install package") {
             steps {
                 script {
@@ -65,8 +65,8 @@ pipeline {
             steps {
                 script {
                     
-                    buildImage('newmohib/node-docker-nginx-sample-app:node-1.0.4')
-                    pushToDockerHub('newmohib/node-docker-nginx-sample-app:node-1.0.4') 
+                    buildImage("newmohib/node-docker-nginx-sample-app:node-${IMAGE_NAME}")
+                    pushToDockerHub("newmohib/node-docker-nginx-sample-app:node-${IMAGE_NAME}") 
                 }
             }
         }
