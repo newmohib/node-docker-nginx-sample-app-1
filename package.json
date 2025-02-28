@@ -1,6 +1,6 @@
 {
     "name": "nginx-crash-course",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "A Node.js application serving a static HTML file, used for load balancing with NGINX.",
     "main": "server.js",
     "scripts": {
