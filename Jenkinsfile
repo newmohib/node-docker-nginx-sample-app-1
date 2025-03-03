@@ -92,9 +92,8 @@ pipeline {
 
                             # Run the new container
                             docker run -d --name ${env.CONTAINER_NAME} \\
-                               
-                                -p 3000:3000 \\
-                                ${env.IMAGE_NAME}:jenkins-1.0.1
+                            -p 3000:3000 \\
+                            ${env.IMAGE_NAME}:jenkins-1.0.1
                         """
 
                         sshagent(['aws-linux-server-2gb-ram']) {
