@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   app:
-    image: newmohib/node-docker-nginx-sample-app:jenkins-1.0.1 # Replace with your custom image name
+    image: ${IMAGE}:jenkins-1.0.1 # Replace with your custom image name
     container_name: node-docker-nginx-sample-app
     restart: always
     depends_on:

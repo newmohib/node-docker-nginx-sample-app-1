@@ -85,7 +85,7 @@ pipeline {
                         """
 
                         // docker-compose
-                        def shellCmd = "bash ./server-cmds.sh"
+                        def shellCmd = "bash ./server-cmds.sh ${env.IMAGE_NAME}"
                         sshagent(['aws-linux-server-2gb-ram']) {
                             // this sh and yaml file will be copied to the remote server
                             sh "scp server-cmds.sh ec2-user@18.143.98.4:/home/ec2-user"
