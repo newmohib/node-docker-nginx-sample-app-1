@@ -10,6 +10,7 @@ pipeline {
         IMAGE_NAME = "newmohib/node-docker-nginx-sample-app"
         IMAGE_TAG = "jenkins-1.0.2"
         CONTAINER_NAME = "node-docker-nginx-sample-app"
+        BRANCH_NAME= "dev-jenkins-2-5"
     }
 
     stages {
@@ -135,10 +136,7 @@ pipeline {
                             sh 'git add package.json package-lock.json'
                             // Commit changes
                             sh 'git commit -m "Bump version [skip ci]"'
-                            sh 'git push origin HEAD:dev-jenkins-2-5'
-                            // Get the current branch name dynamically
-                            def currentBranch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
-                            echo "Current branch: ${currentBranch}"
+                            sh "git push origin HEAD:${env.BRANCH_NAME}"
                             
                         }
                 }
