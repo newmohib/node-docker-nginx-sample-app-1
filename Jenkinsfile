@@ -132,7 +132,7 @@ pipeline {
                             sh "git remote set-url origin https://${USER}:${PASS}@github.com/newmohib/node-docker-nginx-sample-app-1.git"
                             sh 'git add package.json package-lock.json'
                             sh 'git commit -m "Bump version [skip ci]"'
-                            sh 'git push origin HEAD:dev-jenkins-5'
+                            sh 'git push origin HEAD:dev-jenkins-2-5'
                         }
                 }
             }
