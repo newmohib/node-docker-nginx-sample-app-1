@@ -92,10 +92,6 @@ pipeline {
                         //         docker rm ${env.CONTAINER_NAME}
                         //     fi
 
-                        //     # Remove all older images except the latest one
-                        //     #docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^${env.IMAGE_NAME}:" | grep -v "jenkins-1.0.1" | awk '{print $2}' | xargs -r docker rmi -f
-
-
                         //     # Run the new container
                         //     docker run -d --name ${env.CONTAINER_NAME} \\
                         //     -p 4000:4000 \\
@@ -112,8 +108,12 @@ pipeline {
                             fi
 
                             # Remove all older images except the latest one
-                            #docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^""" + env.IMAGE_NAME + """: " | grep -v "jenkins-1.0.1" | awk '{print \$2}' | xargs -r docker rmi -f
-  
+                            docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^""" + env.IMAGE_NAME + """: " | grep -v "jenkins-1.0.1" | awk '{print \$2}' | xargs -r docker rmi -f
+
+                            # Run the new container
+                            docker run -d --name ${env.CONTAINER_NAME} \\
+                                -p 4000:4000 \\
+                                ${env.IMAGE_NAME}:jenkins-1.0.1
                         """
 
                         sshagent(['aws-linux-server-2gb-ram']) {
