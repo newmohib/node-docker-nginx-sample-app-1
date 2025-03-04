@@ -135,23 +135,11 @@ pipeline {
                             sh 'git add package.json package-lock.json'
                             // Commit changes
                             sh 'git commit -m "Bump version [skip ci]"'
-
+                            sh 'git push origin HEAD:dev-jenkins-2-5'
                             // Get the current branch name dynamically
                             def currentBranch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
-                            
-                            // If the current branch is HEAD (detached), fallback to a predefined branch name or handle as needed
-                            if (currentBranch == "HEAD") {
-                                echo "Currently in detached HEAD state. Falling back to 'main' branch."
-                                currentBranch = "main"  // Or use a different default branch name if required
-                            }
-
                             echo "Current branch: ${currentBranch}"
-
-                            // Push the current branch to remote
-                            sh "git push origin ${currentBranch}"
-                            // sh 'git push origin HEAD:dev-jenkins-2-5'
-                            //echo "Pushing current branch: ${currentBranch} to remote branch: ${currentBranch}"
-                            //sh "git push"
+                            
                         }
                 }
             }
