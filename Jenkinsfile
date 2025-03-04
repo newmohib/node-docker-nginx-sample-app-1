@@ -13,7 +13,24 @@ pipeline {
     }
 
     stages {
+        stage('Increment Version') {
+            steps {
+                script {
+                     echo 'incrementing the application version...'
+                    // Get current version
+                    def currentVersion = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
 
+                    // Increment patch version using npm
+                    sh 'npm version patch --no-git-tag-version'
+
+                    // Get new version
+                    def newVersion = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
+                    env.IMAGE_TAG = "$newVersion-$BUILD_NUMBER"
+                    //env.IMAGE_TAG
+                    echo "Version updated from ${currentVersion} to ${newVersion} and image tag is ${env.IMAGE_NAME}"
+                }
+            }
+        }
         stage('Check Remote Server') {
             steps {
                 script {
