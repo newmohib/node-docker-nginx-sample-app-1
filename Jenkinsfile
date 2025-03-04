@@ -123,7 +123,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId:'github-personal-credential-2',passwordVariable:'PASS', usernameVariable:'USER')])
                         {
-                            def currentBranch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
+                            // def currentBranch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
                             sh 'git config --global user.name "Jenkins"'
                             sh 'git config --global user.email "jenkins@example.com"'
 
@@ -135,8 +135,8 @@ pipeline {
                             sh 'git add package.json package-lock.json'
                             sh 'git commit -m "Bump version [skip ci]"'
                             // sh 'git push origin HEAD:dev-jenkins-2-5'
-                            echo "Pushing current branch: ${currentBranch} to remote branch: ${currentBranch}"
-                            sh "git push origin ${currentBranch}:${currentBranch}"
+                            //echo "Pushing current branch: ${currentBranch} to remote branch: ${currentBranch}"
+                            sh "git push"
                         }
                 }
             }
