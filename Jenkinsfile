@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                      echo 'incrementing the application version...'
-                     echo "GIT_BRANCH: ${GIT_BRANCH}"
+                     
                     // Get current version
                     def currentVersion = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
 
@@ -123,6 +123,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId:'github-personal-credential-2',passwordVariable:'PASS', usernameVariable:'USER')])
                         {
+                            def currentBranch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
                             sh 'git config --global user.name "Jenkins"'
                             sh 'git config --global user.email "jenkins@example.com"'
 
@@ -133,7 +134,9 @@ pipeline {
                             sh "git remote set-url origin https://${USER}:${PASS}@github.com/newmohib/node-docker-nginx-sample-app-1.git"
                             sh 'git add package.json package-lock.json'
                             sh 'git commit -m "Bump version [skip ci]"'
-                            sh 'git push origin HEAD:dev-jenkins-2-5'
+                            // sh 'git push origin HEAD:dev-jenkins-2-5'
+                            echo "Pushing current branch: ${currentBranch} to remote branch: ${currentBranch}"
+                            sh "git push origin ${currentBranch}:${currentBranch}"
                         }
                 }
             }
