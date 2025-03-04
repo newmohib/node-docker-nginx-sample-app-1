@@ -1,22 +1,37 @@
-version: '3'
+version: "3.8"
+
 services:
-  app1:
-    build: .
+  app:
+    image: newmohib/node-docker-nginx-sample-app:jenkins-1.0.1 # Replace with your custom image name
+    container_name: node-docker-nginx-sample-app
+    restart: always
+    depends_on:
+      - db
     environment:
-      - APP_NAME=App1
+      NODE_ENV: dev
+      DATABASE_URL: postgres://postgres:postgres@db:5432/mydatabase # Update if needed
     ports:
-      - "3001:3000"
+      - "4000:4000"
+    networks:
+      - my_network
 
-  app2:
-    build: .
+  db:
+    image: postgres:15 # Use the required PostgreSQL version
+    container_name: my_postgres_container
+    restart: always
     environment:
-      - APP_NAME=App2
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydatabase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - "3002:3000"
+      - "5432:5432"
+    networks:
+      - my_network
 
-  app3:
-    build: .
-    environment:
-      - APP_NAME=App3
-    ports:
-      - "3003:3000"
+networks:
+  my_network:
+
+volumes:
+  postgres_data:

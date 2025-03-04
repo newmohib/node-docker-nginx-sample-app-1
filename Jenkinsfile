@@ -84,11 +84,16 @@ pipeline {
                             docker system prune -a -f
                         """
 
+                        // docker-compose
+                        def dockerComposeCmd = "docker-compose -f docker-compose.yaml up -d"
                         sshagent(['aws-linux-server-2gb-ram']) {
                            // sh "ssh -o StrictHostKeyChecking=no ec2-user@18.143.98.4 '${dockerCmd}'"
-                            sh """
-                                ssh -o StrictHostKeyChecking=no ec2-user@18.143.98.4 '${dockerCmd}'
-                            """
+                            sh "scp docker-compose.yaml ec2-user@18.143.98.4:/home/ec2-user"
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@18.143.98.4 '${dockerComposeCmd}'"
+                            
+                            // sh """
+                            //     ssh -o StrictHostKeyChecking=no ec2-user@18.143.98.4 '${dockerCmd}'
+                            // """
                         }
                     }
             }
