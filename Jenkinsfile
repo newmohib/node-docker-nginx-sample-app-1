@@ -112,7 +112,7 @@ pipeline {
                             fi
 
                             # Remove all older images except the latest one
-                            docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^""" + env.IMAGE_NAME + """: " | grep -v "jenkins-1.0.1" | awk '{print \$2}' | xargs -r docker rmi -f
+                            #docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^""" + env.IMAGE_NAME + """: " | grep -v "jenkins-1.0.1" | awk '{print \$2}' | xargs -r docker rmi -f
   
                         """
 
