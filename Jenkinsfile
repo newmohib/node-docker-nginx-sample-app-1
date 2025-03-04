@@ -133,10 +133,18 @@ pipeline {
                             
                             sh "git remote set-url origin https://${USER}:${PASS}@github.com/newmohib/node-docker-nginx-sample-app-1.git"
                             sh 'git add package.json package-lock.json'
+                            // Commit changes
                             sh 'git commit -m "Bump version [skip ci]"'
+
+                            // Get the current branch name dynamically
+                            def currentBranch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
+                            echo "Current branch: ${currentBranch}"
+
+                            // Push the current branch to remote
+                            sh "git push origin ${currentBranch}"
                             // sh 'git push origin HEAD:dev-jenkins-2-5'
                             //echo "Pushing current branch: ${currentBranch} to remote branch: ${currentBranch}"
-                            sh "git push"
+                            //sh "git push"
                         }
                 }
             }
