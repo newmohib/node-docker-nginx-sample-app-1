@@ -52,6 +52,10 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId:'docker-hub-personal-credential',passwordVariable:'PASS', usernameVariable:'USER')]){
                     script {
                         sh "echo $PASS | docker login -u $USER --password-stdin"
+                        // Check if images exist with the given name, then remove them
+                        if [ "$(docker images -q ${env.IMAGE_NAME})" ]; then
+                            docker rmi -f ${env.IMAGE_NAME}
+                        fi
                         sh "docker tag ${env.IMAGE_NAME}:jenkins-1.0.1 ${env.IMAGE_NAME}:jenkins-1.0.1"
                         sh "docker push ${env.IMAGE_NAME}:jenkins-1.0.1"
                     }
@@ -88,11 +92,6 @@ pipeline {
                             if [ \$(docker ps -aq -f name=${env.CONTAINER_NAME}) ]; then
                                 docker stop ${env.CONTAINER_NAME}
                                 docker rm ${env.CONTAINER_NAME}
-                            fi
-
-                            # Check if images exist with the given name, then remove them
-                            if [ "$(docker images -q ${env.IMAGE_NAME})" ]; then
-                                docker rmi -f ${env.IMAGE_NAME}
                             fi
 
                             # Run the new container
