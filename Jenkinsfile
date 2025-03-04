@@ -85,7 +85,7 @@ pipeline {
                         """
 
                         // docker-compose
-                        def dockerComposeCmd = "docker-compose -f docker-compose.yaml up -d"
+                        def dockerComposeCmd = "docker-compose -f docker-compose.yaml up --detach"
                         sshagent(['aws-linux-server-2gb-ram']) {
                            // sh "ssh -o StrictHostKeyChecking=no ec2-user@18.143.98.4 '${dockerCmd}'"
                             sh "scp docker-compose.yaml ec2-user@18.143.98.4:/home/ec2-user"
