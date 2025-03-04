@@ -52,10 +52,6 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId:'docker-hub-personal-credential',passwordVariable:'PASS', usernameVariable:'USER')]){
                     script {
                         sh "echo $PASS | docker login -u $USER --password-stdin"
-                        // Check if images exist with the given name, then remove them
-                        if [ "$(docker images -q ${env.IMAGE_NAME})" ]; then
-                            docker rmi -f ${env.IMAGE_NAME}
-                        fi
                         sh "docker tag ${env.IMAGE_NAME}:jenkins-1.0.1 ${env.IMAGE_NAME}:jenkins-1.0.1"
                         sh "docker push ${env.IMAGE_NAME}:jenkins-1.0.1"
                     }
@@ -93,6 +89,10 @@ pipeline {
                                 docker stop ${env.CONTAINER_NAME}
                                 docker rm ${env.CONTAINER_NAME}
                             fi
+
+                            # Remove all older images except the latest one
+                            docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^${env.IMAGE_NAME}:" | grep -v "jenkins-1.0.1" | awk '{print $2}' | xargs -r docker rmi -f
+
 
                             # Run the new container
                             docker run -d --name ${env.CONTAINER_NAME} \\
