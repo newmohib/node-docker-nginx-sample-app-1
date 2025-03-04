@@ -85,14 +85,14 @@ pipeline {
                         """
 
                         // docker-compose
-                        def dockerComposeCmd = "docker-compose -f docker-compose.yaml up --detach"
+                        def shellCmd = "bash ./server-cmds.sh"
                         sshagent(['aws-linux-server-2gb-ram']) {
-                           // sh "ssh -o StrictHostKeyChecking=no ec2-user@18.143.98.4 '${dockerCmd}'"
+                            // this sh and yaml file will be copied to the remote server
+                            sh "scp server-cmds.sh ec2-user@18.143.98.4:/home/ec2-user"
                             sh "scp docker-compose.yaml ec2-user@18.143.98.4:/home/ec2-user"
-                            // sh "ssh -o StrictHostKeyChecking=no ec2-user@18.143.98.4 '${dockerComposeCmd}'"
 
                             sh """
-                                ssh -o StrictHostKeyChecking=no ec2-user@18.143.98.4 '${dockerComposeCmd}'
+                                ssh -o StrictHostKeyChecking=no ec2-user@18.143.98.4 '${shellCmd}'
                             """
                         }
                     }
