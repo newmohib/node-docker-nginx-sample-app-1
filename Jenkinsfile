@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "newmohib/node-docker-nginx-sample-app"
-        IMAGE_TAG = "jenkins-1.0.2"
+        // IMAGE_TAG = "jenkins-1.0.2"
         CONTAINER_NAME = "node-docker-nginx-sample-app"
         BRANCH_NAME= "dev-jenkins-2-5"
     }
