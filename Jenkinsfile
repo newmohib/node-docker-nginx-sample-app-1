@@ -81,6 +81,27 @@ pipeline {
                         //         -p ${_ADMIN_END_PORT}:4000 \\
                         //         ${env.IMAGE_NAME}:jenkins-1.0.1
                         // """
+
+
+                        // def dockerCmd = """
+                        //     docker pull ${env.IMAGE_NAME}:jenkins-1.0.1
+
+                        //     # Check if the container exists, then stop and remove it
+                        //     if [ \$(docker ps -aq -f name=${env.CONTAINER_NAME}) ]; then
+                        //         docker stop ${env.CONTAINER_NAME}
+                        //         docker rm ${env.CONTAINER_NAME}
+                        //     fi
+
+                        //     # Remove all older images except the latest one
+                        //     #docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^${env.IMAGE_NAME}:" | grep -v "jenkins-1.0.1" | awk '{print $2}' | xargs -r docker rmi -f
+
+
+                        //     # Run the new container
+                        //     docker run -d --name ${env.CONTAINER_NAME} \\
+                        //     -p 4000:4000 \\
+                        //     ${env.IMAGE_NAME}:jenkins-1.0.1
+                        // """
+
                         def dockerCmd = """
                             docker pull ${env.IMAGE_NAME}:jenkins-1.0.1
 
@@ -91,13 +112,8 @@ pipeline {
                             fi
 
                             # Remove all older images except the latest one
-                            #docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^${env.IMAGE_NAME}:" | grep -v "jenkins-1.0.1" | awk '{print $2}' | xargs -r docker rmi -f
-
-
-                            # Run the new container
-                            docker run -d --name ${env.CONTAINER_NAME} \\
-                            -p 4000:4000 \\
-                            ${env.IMAGE_NAME}:jenkins-1.0.1
+                            docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^""" + env.IMAGE_NAME + """: " | grep -v "jenkins-1.0.1" | awk '{print \$2}' | xargs -r docker rmi -f
+  
                         """
 
                         sshagent(['aws-linux-server-2gb-ram']) {
