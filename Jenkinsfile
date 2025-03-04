@@ -92,7 +92,7 @@ pipeline {
 
                             # Run the new container
                             docker run -d --name ${env.CONTAINER_NAME} \\
-                            -p 3000:3000 \\
+                            -p 4000:4000 \\
                             ${env.IMAGE_NAME}:jenkins-1.0.1
                         """
 
