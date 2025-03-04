@@ -7,4 +7,5 @@ docker-compose -f docker-compose.yaml up --detach
 
 echo "success"
 
-docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^""" + "${IMAGE}" + """: " | grep -v "${IMAGE_TAG}" | awk '{print \$2}' | xargs -r docker rmi -f
+docker system prune -a -f
+# docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^""" + "${IMAGE}" + """: " | grep -v "${IMAGE_TAG}" | awk '{print \$2}' | xargs -r docker rmi -f
