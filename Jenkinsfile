@@ -8,6 +8,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "newmohib/node-docker-nginx-sample-app"
+        IMAGE_TAG = "jenkins-1.0.1"
         CONTAINER_NAME = "node-docker-nginx-sample-app"
     }
 
@@ -35,7 +36,7 @@ pipeline {
             steps {
                 script {
                     echo "building the docker image... ${env.IMAGE_NAME}"
-                    sh "docker build -t ${env.IMAGE_NAME}:jenkins-1.0.1 ."
+                    sh "docker build -t ${env.IMAGE_NAME}:${env.IMAGE_TAG} ."
                     sh 'node -v && npm -v && docker -v && docker images && docker ps -a'
                     // sshagent(['aws-linux-server-2gb-ram']) {
                     //     // Test SSH connection
@@ -52,8 +53,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId:'docker-hub-personal-credential',passwordVariable:'PASS', usernameVariable:'USER')]){
                     script {
                         sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh "docker tag ${env.IMAGE_NAME}:jenkins-1.0.1 ${env.IMAGE_NAME}:jenkins-1.0.1"
-                        sh "docker push ${env.IMAGE_NAME}:jenkins-1.0.1"
+                        sh "docker tag ${env.IMAGE_NAME}:${env.IMAGE_TAG} ${env.IMAGE_NAME}:${env.IMAGE_TAG}"
+                        sh "docker push ${env.IMAGE_NAME}:${env.IMAGE_TAG}"
                     }
                 }
             }
@@ -64,7 +65,7 @@ pipeline {
                     script {
                        echo 'Deploying the application to the remote server as EC2...'
                         def dockerCmd = """
-                            docker pull ${env.IMAGE_NAME}:jenkins-1.0.1
+                            docker pull ${env.IMAGE_NAME}:${env.IMAGE_TAG}
 
                             # Check if the container exists, then stop and remove it
                             if [ \$(docker ps -aq -f name=${env.CONTAINER_NAME}) ]; then
@@ -73,26 +74,27 @@ pipeline {
                             fi
 
                             # Remove all older images except the latest one
-                            docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^""" + env.IMAGE_NAME + """: " | grep -v "jenkins-1.0.1" | awk '{print \$2}' | xargs -r docker rmi -f
+                            docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep "^""" + env.IMAGE_NAME + """: " | grep -v "${env.IMAGE_TAG}" | awk '{print \$2}' | xargs -r docker rmi -f
                             
                             # Run the new container
                             docker run -d --name ${env.CONTAINER_NAME} \\
                                 -p 4000:4000 \\
-                                ${env.IMAGE_NAME}:jenkins-1.0.1
+                                ${env.IMAGE_NAME}:${env.IMAGE_TAG}
                             
                             # Prune all unused images, containers, and volumes
                             docker system prune -a -f
                         """
 
                         // docker-compose
-                        def shellCmd = "bash ./server-cmds.sh ${env.IMAGE_NAME}"
+                        def shellCmd = "bash ./server-cmds.sh ${env.IMAGE_NAME} ${env.IMAGE_TAG}"
+                        def ec2Instance =  "ec2-user@18.143.98.4"
                         sshagent(['aws-linux-server-2gb-ram']) {
                             // this sh and yaml file will be copied to the remote server
-                            sh "scp server-cmds.sh ec2-user@18.143.98.4:/home/ec2-user"
-                            sh "scp docker-compose.yaml ec2-user@18.143.98.4:/home/ec2-user"
+                            sh "scp server-cmds.sh ${ec2Instance}:/home/ec2-user"
+                            sh "scp docker-compose.yaml ${ec2Instance}:/home/ec2-user"
 
                             sh """
-                                ssh -o StrictHostKeyChecking=no ec2-user@18.143.98.4 '${shellCmd}'
+                                ssh -o StrictHostKeyChecking=no ${ec2Instance} '${shellCmd}'
                             """
                         }
                     }

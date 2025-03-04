@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-export IMAGE=$1
+export IMAGE=$1 
+export IMAGE_TAG=$2
 
 docker-compose -f docker-compose.yaml up --detach
 
