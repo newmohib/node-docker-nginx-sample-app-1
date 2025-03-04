@@ -17,6 +17,7 @@ pipeline {
             steps {
                 script {
                      echo 'incrementing the application version...'
+                     echo "BRANCH_NAME: $BRANCH_NAME"
                     // Get current version
                     def currentVersion = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
 
