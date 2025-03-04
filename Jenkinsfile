@@ -90,6 +90,11 @@ pipeline {
                                 docker rm ${env.CONTAINER_NAME}
                             fi
 
+                            # Check if images exist with the given name, then remove them
+                            if [ "$(docker images -q ${env.IMAGE_NAME})" ]; then
+                                docker rmi -f ${env.IMAGE_NAME}
+                            fi
+
                             # Run the new container
                             docker run -d --name ${env.CONTAINER_NAME} \\
                             -p 4000:4000 \\
