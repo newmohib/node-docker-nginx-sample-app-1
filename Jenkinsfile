@@ -138,6 +138,13 @@ pipeline {
 
                             // Get the current branch name dynamically
                             def currentBranch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
+                            
+                            // If the current branch is HEAD (detached), fallback to a predefined branch name or handle as needed
+                            if (currentBranch == "HEAD") {
+                                echo "Currently in detached HEAD state. Falling back to 'main' branch."
+                                currentBranch = "main"  // Or use a different default branch name if required
+                            }
+
                             echo "Current branch: ${currentBranch}"
 
                             // Push the current branch to remote
